@@ -1,7 +1,7 @@
 var assert = require("assert");
 var when = require("../lib/promise").when;
 var whenPromise = require("../lib/promise").whenPromise;
-var defer = require("../lib/promise").defer;
+var Defer = require("../lib/promise").defer;
 var Step = require("../lib/step").Step;
 
 exports.testSpeedPlainValue = function(){
@@ -12,7 +12,7 @@ exports.testSpeedPlainValue = function(){
 };
 
 exports.testSpeedPromise = function(){
-	var deferred = defer();
+	var deferred = Defer();
 	for(var i = 0; i < 1000; i++){
 		when(deferred.promise, function(){
 		});
@@ -26,7 +26,7 @@ exports.testWhenPromiseRejectHandled = function(){
 	// This shouldn't result in an uncaught exception thrown by the promise library.
 	whenPromise(true, function(){
 		return whenPromise((function(){
-			var deferred = defer();
+			var deferred = Defer();
 			deferred.reject({});
 			return deferred.promise;
 		})());
@@ -34,15 +34,7 @@ exports.testWhenPromiseRejectHandled = function(){
 };
 
 function veryDeferred(){
-	var deferred = defer();
-	setTimeout(function(){
-		deferred.resolve(true);
-	}, 100);
-	return deferred.promise;
-}
-
-function veryDeferred(){
-	var deferred = defer();
+	var deferred = Defer();
 	setTimeout(function(){
 		deferred.resolve(true);
 	}, 100);
@@ -50,7 +42,7 @@ function veryDeferred(){
 }
 
 exports.testStep = function(){
-	var deferred = defer();
+	var deferred = Defer();
 	Step({foo: 'bar'}, [
 		function(){
 			assert.ok(this.foo === 'bar');
