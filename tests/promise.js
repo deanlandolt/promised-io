@@ -1,8 +1,8 @@
-var assert = require("assert"),
-	when = require("../lib/promise").when,
-	whenPromise = require("../lib/promise").whenPromise,
-	defer = require("../lib/promise").defer,
-	Step = require("../lib/step").Step;
+var assert = require("assert");
+var when = require("../lib/promise").when;
+var whenPromise = require("../lib/promise").whenPromise;
+var defer = require("../lib/promise").defer;
+var Step = require("../lib/step").Step;
 
 exports.testSpeedPlainValue = function(){
 	for(var i = 0; i < 1000; i++){
@@ -53,31 +53,26 @@ exports.testStep = function(){
 	var deferred = defer();
 	Step({foo: 'bar'}, [
 		function(){
-			console.log('S1');
 			assert.ok(this.foo === 'bar');
 			return false;
 		},
 		function(result){
-			console.log('S2');
 			assert.ok(result === false);
 			this.foo = 'baz';
 			return veryDeferred();
 		},
 		function(result){
-			console.log('S3');
 			assert.ok(this.foo === 'baz');
 			assert.ok(result === true);
 			throw Error('Catchme!');
 		},
 		function(result){
-			console.log('S4');
 			assert.ok(result instanceof Error);
 			assert.ok(result.message === 'Catchme!');
 			deferred.resolve(true);
 			// return undefined;
 		},
 		function(result){
-			console.log('S5', result);
 			// Should never come here
 			deferred.reject(false);
 			assert.ok(true === false);
@@ -86,6 +81,5 @@ exports.testStep = function(){
 	return deferred.promise;
 };
 
-if (require.main === module)
-    require("patr/runner").run(exports);
+if (require.main === module) require("patr/lib/test").run(exports);
 
