@@ -1,30 +1,32 @@
-var vows = require("vows"),
-		assert = require("assert"),
-		querystring = require("../lib/util/querystring");
+var assert = require("assert");
+var querystring = require("../lib/util/querystring");
 
-vows.describe("util/querystring").addBatch({
-	"When munging array parameters": {
-		topic: ["bar", "baz"],
-		"Each array value should have its own parameter name": function(arr){
-			var requestParams = [];
-			querystring.addToArray(requestParams, "foo", arr);
-			assert.deepEqual(requestParams, ["foo[]", "bar", "foo[]", "baz"]);
-		}
+exports.testQuerystring = {
+	"test munging array parameters": function() {
+		var requestParams = [];
+		querystring.addToArray(requestParams, "foo", ["bar", "baz"]);
+		assert.deepEqual(requestParams, 
+			["foo[]", "bar", "foo[]", "baz"], 
+			"each array value should have its own parameter name"
+		);
 	},
-	"When munging object parameters": {
-		topic: { "key": "value" },
-		"Each property value should have its own parameter name": function(obj){
-			var requestParams = [];
-			querystring.addToArray(requestParams, "obj", obj);
-			assert.deepEqual(requestParams, ["obj[key]", "value"]);
-		}
+	"test munging object parameters": function() {
+		var requestParams = [];
+		querystring.addToArray(requestParams,"obj", {"key": "value"});
+		assert.deepEqual(requestParams, 
+			["obj[key]", "value"], 
+			"each property value should have its own parameter name"
+		);
 	},
-	"When parsing a munged query string": {
-		topic: "foo[]=bar&foo[]=baz&obj[key]=value",
-		"Arrays and objects should retain their own parameter names": function(qs){
-			var requestParams = [];
-			querystring.parseToArray(requestParams, qs);
-			assert.deepEqual(requestParams, ["foo[]", "bar", "foo[]", "baz", "obj[key]", "value"]);
-		}
+	"test parsing a munged query string": function() {
+		var requestParams = [];
+		querystring.parseToArray(requestParams, "foo[]=bar&foo[]=baz&obj[key]=value");
+		console.log(requestParams)
+		assert.deepEqual(requestParams,
+			["foo[]", "bar", "foo[]", "baz", "obj[key]", "value"],
+			"arrays and objects should retain their own parameter names"
+		);
 	}
-})["export"](module);
+};
+
+if (require.main === module) require("patr/lib/test").run(exports);
