@@ -30,14 +30,14 @@
     "io"
   ],
   "mappings": {
-    "patr": "http://github.com/kriszyp/patr/zipball/v0.2.5"
+    "patr/lib/": "http://github.com/kriszyp/patr/zipball/v0.2.5"
   },
   "directories": {
     "lib": "./lib",
     "test": "./tests"
   },
   "devDependencies": {
-    "patr": ">=0.2.5"
+    "patr": ">=0.2"
   },
   "scripts": {
     "test": "node tests/all-tests.js"
