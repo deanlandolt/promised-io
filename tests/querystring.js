@@ -21,7 +21,6 @@ exports.testQuerystring = {
 	"test parsing a munged query string": function() {
 		var requestParams = [];
 		querystring.parseToArray(requestParams, "foo[]=bar&foo[]=baz&obj[key]=value");
-		console.log(requestParams)
 		assert.deepEqual(requestParams,
 			["foo[]", "bar", "foo[]", "baz", "obj[key]", "value"],
 			"arrays and objects should retain their own parameter names"
