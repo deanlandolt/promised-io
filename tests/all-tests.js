@@ -1,4 +1,4 @@
-var test = require("patr/lib/test");
+var test = require("patr");
 var assert = test.assert;
 
 exports.testWtf = function() {

@@ -1,4 +1,4 @@
-var test = require("patr/lib/test");
+var test = require("patr");
 var assert = test.assert;
 var when = require("../lib/promise").when;
 var client = require("../lib/http-client");

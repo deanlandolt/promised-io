@@ -1,12 +1,14 @@
-var test = require("patr/lib/test");
+var test = require("patr");
 var assert = test.assert;
-var childProcess = require("../lib/child-process");
 var when = require("../lib/promise").when;
+var childProcess = require("../lib/child-process");
 
-exports.testGet = function() {
-	return when(client.request({url: "http://google.com/"}), function(response) {
-		assert.ok(response.status < 400, "status should be 2xx or 3xx");
-	});
+exports.testSpawn = function() {
+    
+};
+
+exports.testExecute = function() {
+	
 };
 
 if (require.main === module) test.run(exports);
