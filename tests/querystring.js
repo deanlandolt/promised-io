@@ -1,4 +1,5 @@
-var assert = require("assert");
+var test = require("patr/lib/test");
+var assert = test.assert;
 var querystring = require("../lib/util/querystring");
 
 exports.testQuerystring = {
@@ -28,4 +29,4 @@ exports.testQuerystring = {
 	}
 };
 
-if (require.main === module) require("patr/lib/test").run(exports);
+if (require.main === module) test.run(exports);

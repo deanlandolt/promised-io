@@ -1,7 +1,7 @@
 var test = require("patr/lib/test");
 var assert = test.assert;
+var childProcess = require("../lib/child-process");
 var when = require("../lib/promise").when;
-var client = require("../lib/http-client");
 
 exports.testGet = function() {
 	return when(client.request({url: "http://google.com/"}), function(response) {

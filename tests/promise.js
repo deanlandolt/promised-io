@@ -1,4 +1,5 @@
-var assert = require("assert");
+var test = require("patr/lib/test");
+var assert = test.assert;
 var when = require("../lib/promise").when;
 var whenPromise = require("../lib/promise").whenPromise;
 var Defer = require("../lib/promise").defer;
@@ -73,5 +74,4 @@ exports.testStep = function(){
 	return deferred.promise;
 };
 
-if (require.main === module) require("patr/lib/test").run(exports);
-
+if (require.main === module) test.run(exports);
