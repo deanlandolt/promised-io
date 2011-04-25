@@ -15,8 +15,13 @@ exports.testOutput = {
         });
     },
     testProperties: function() {
-        assert.equal(typeof process.userId, 'number');
-        assert.equal(typeof process.groupId, 'number');
+        assert.equal(typeof process.pid, 'number');
+        assert.equal(typeof process.uid, 'number');
+        assert.equal(typeof process.gid, 'number');
+        assert.ok(process.pid > 0);
+        assert.ok(process.uid > 0);
+        assert.ok(process.gid > 0);
+        
         var memory = process.memory;
         var keys = Object.keys(memory).sort();
         assert.deepEqual(keys, ['heapTotal', 'heapUsed', 'rss', 'vsize']);
