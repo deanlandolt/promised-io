@@ -40,6 +40,6 @@
     "patr": ">=0.2"
   },
   "scripts": {
-    "test": "tests/all-tests.js"
+    "test": "test/all-tests.js"
   }
 }
