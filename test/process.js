@@ -15,12 +15,12 @@ exports.testOutput = {
         });
     },
     testProperties: function() {
-        assert.equal(typeof process.pid, 'number');
-        assert.equal(typeof process.uid, 'number');
-        assert.equal(typeof process.gid, 'number');
-        assert.ok(process.pid > 0);
-        assert.ok(process.uid > 0);
-        assert.ok(process.gid > 0);
+        assert.equal(typeof process.id, 'number');
+        assert.equal(typeof process.user.id, 'number');
+        assert.equal(typeof process.group.id, 'number');
+        assert.ok(process.id > 0);
+        assert.ok(process.user.id > 0);
+        assert.ok(process.group.id > 0);
         
         var memory = process.memory;
         var keys = Object.keys(memory).sort();
