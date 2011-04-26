@@ -1,3 +1,4 @@
+#!/usr/bin/env node
 var test = require("patr");
 var assert = test.assert;
 
