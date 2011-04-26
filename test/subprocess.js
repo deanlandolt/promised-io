@@ -1,7 +1,7 @@
 var test = require("patr");
 var assert = test.assert;
 var when = require("../lib/promise").when;
-var childProcess = require("../lib/child-process");
+var subprocess = require("../lib/subprocess");
 
 exports.testSpawn = function() {
     
