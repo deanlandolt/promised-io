@@ -1,38 +1,45 @@
 /**
 * HTTP Client using the JSGI standard objects
 */
-
 var LazyArray = require("../../../lib/lazy-array").LazyArray;
 
 // configurable proxy server setting, defaults to http_proxy env var
 exports.proxyServer = require("../../../lib/process").env.http_proxy;
 
 exports.request = function(request){
-	var url = new java.net.URL(request.url),
-		connection = url.openConnection(),
-		method = request.method || "GET",
-		is = null,
-		promised = true;
-	
+	var url = new java.net.URL(request.url);
+	var connection = url.openConnection();
+	var method = request.method || (request.body ? "POST" : "GET");
+	var is = null;
+	var promised = false;
+
 	if (request.jsgi && "async" in request.jsgi) promised = request.jsgi.async;
-	
-	for (var header in this.headers) {
-		var value = this.headers[header];
-		connection.addRequestProperty(String(header), String(value));
+
+	for (var header in request.headers) {
+		var value = request.headers[header];
+		connection.setRequestProperty(String(header), String(value));
 	}
 	connection.setFollowRedirects(false)
 	connection.setDoInput(true);
 	connection.setRequestMethod(method);
-	if (request.body && typeof request.body.forEach === "function") {
+
+	// TODO normative list of non-body methods?
+	var hasBody;
+	if (request.body && typeof request.body.forEach == 'function') hasBody = true;
+	if (['GET', 'OPTIONS', 'DELETE'].indexOf(method) >= 0) hasBody = false;
+
+	if (hasBody) {
 		connection.setDoOutput(true);
-		var writer = new java.io.OutputStreamWriter(connection.getOutputStream());
+		// TODO get charset from header
+		var writer = new java.io.OutputStreamWriter(connection.getOutputStream(), 'UTF-8');
 		request.body.forEach(function(chunk) {
 			writer.write(chunk);
 			writer.flush();
 		});
 	}
+
 	if (typeof writer !== "undefined") writer.close();
-	
+
 	try {
 		connection.connect();
 		is = connection.getInputStream();
@@ -40,7 +47,7 @@ exports.request = function(request){
 	catch (e) {
 		is = connection.getErrorStream();
 	}
-	
+
 	var status = Number(connection.getResponseCode()),
 		headers = {};
 	for (var i = 0;; i++) {
@@ -61,8 +68,8 @@ exports.request = function(request){
 			}
 		}
 	}
-	
-	var reader = new java.io.BufferedReader(new java.io.InputStreamReader(is)),
+
+	var reader = new java.io.BufferedReader(new java.io.InputStreamReader(is/*, "UTF-8" FIXME!  */)),
 		builder = new java.lang.StringBuilder(),
 		line;
 	// FIXME create deferred and LazyArray
