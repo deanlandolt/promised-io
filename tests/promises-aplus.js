@@ -1,7 +1,8 @@
-var lib = require("../promise");
-var promisesAplusTests = require("promises-aplus-tests");
+var promisesAplusTests = require('promises-aplus-tests');
+var defer = require('../defer');
+var Promise = require('../Promise');
 
-exports.baseAdapter = {
+exports.adaptPromise = {
 	resolved: Promise.resolve,
 	rejected: Promise.reject,
 	deferred: function () {
@@ -18,19 +19,19 @@ exports.baseAdapter = {
 	}
 };
 
-exports.libAdapter = {
+exports.adaptDeferred = {
 	resolved: function (value) {
-		var deferred = lib.defer();
+		var deferred = defer();
 		deferred.resolve(value);
 		return deferred.promise;
 	},
 	rejected: function (reason) {
-		var deferred = lib.defer();
+		var deferred = defer();
 		deferred.reject(reason);
 		return deferred.promise;
 	},
 	deferred: function () {
-		return lib.defer();
+		return defer();
 	}
 }
 
@@ -39,6 +40,6 @@ function run(adapter, callback) {
 }
 
 if (require.main === module) {
-	// run(exports.baseAdapter, function () {});
-	run(exports.libAdapter, function () {});
+	run(exports.adaptPromise, function () {});
+	// run(exports.adaptDeferred, function () {});
 }
